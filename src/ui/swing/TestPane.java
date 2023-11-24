@@ -22,7 +22,7 @@ public class TestPane extends JPanel{
              for(int col = 0 ; col < 6 ; col++){
                  gbc.gridx=col;
                  gbc.gridy = row;
-                  EventPane eventpane = new EventPane(this,row,col);
+                  EventPane eventpane = new EventPane(this,row,col,false);
 
                   Border border = null;
                   border = new MatteBorder(1, 1, 1, 1, Color.lightGray);

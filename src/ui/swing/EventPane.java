@@ -15,14 +15,16 @@ public class EventPane extends JPanel {
     private Color defaultBackground;
     int row;
     int col;
+    public boolean cliked;
     private TestPane testPane;
     private EventPane searchPane;
-    public EventPane(TestPane testPane,int row , int col){
+    public EventPane(TestPane testPane,int row , int col , boolean cliked){
 
 
         this.col = col;
         this.row = row;
         this.testPane=testPane;
+        this.cliked=cliked;
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -33,6 +35,8 @@ public class EventPane extends JPanel {
 
                 System.out.println("row : "+row+" , col : "+col);
                 searchPane.setBackground(Color.GREEN);
+                searchPane.cliked=true;
+                setCliked(true);
                 setBackground(Color.GREEN);
             }
 
@@ -41,16 +45,21 @@ public class EventPane extends JPanel {
                 super.mouseEntered(e);
                 defaultBackground = getBackground();
                 searchPane = searchAdj(row,col);
-                searchPane.setBackground(Color.GREEN);
-                setBackground(Color.GREEN);
+                if(isCliked()==false && searchPane.isCliked()==false){
+                    searchPane.setBackground(Color.GREEN);
+                    setBackground(Color.GREEN);
+                }
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
+                if(isCliked()==false && searchPane.isCliked()==false ){
+                    searchPane.setBackground(defaultBackground);
+                    setBackground(defaultBackground);
+                }
 
-                searchPane.setBackground(defaultBackground);
-                setBackground(defaultBackground);
 
 
             }
@@ -78,6 +87,11 @@ public class EventPane extends JPanel {
     }
 
 
+    public void setCliked(boolean cliked) {
+        this.cliked = cliked;
+    }
 
-
+    public boolean isCliked() {
+        return cliked;
+    }
 }
