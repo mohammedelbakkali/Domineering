@@ -18,7 +18,17 @@ public class EventPane extends JPanel {
     public boolean cliked;
     private TestPane testPane;
     private EventPane searchPane;
+
+
+    private int counterVertical= 0 ;
+    private int counterHorizontal= 0 ;
+
+
+    public boolean vertical  = true;
+    public boolean horizontal = false;
+
     public EventPane(TestPane testPane,int row , int col , boolean cliked){
+
 
 
         this.col = col;
@@ -26,29 +36,67 @@ public class EventPane extends JPanel {
         this.testPane=testPane;
         this.cliked=cliked;
 
+
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 super.mouseClicked(e);
                 defaultBackground = getBackground();
                 //searchPane = searchAdj(row,col);
 
                 System.out.println("row : "+row+" , col : "+col);
-                searchPane.setBackground(Color.GREEN);
-                searchPane.cliked=true;
-                setCliked(true);
-                setBackground(Color.GREEN);
+
+
+          if(!isCliked() && !searchPane.isCliked()){
+              searchPane.cliked=true;
+              setCliked(true);
+              if(vertical){
+                  searchPane.setBackground(Color.blue);
+                  searchPane.cliked=true;
+                  setCliked(true);
+                  setBackground(Color.blue);
+                  // ------
+                  counterVertical++;
+              }else{
+                  searchPane.setBackground(Color.GREEN);
+                  searchPane.cliked=true;
+                  setCliked(true);
+                  setBackground(Color.GREEN);
+                  // ------
+                  counterHorizontal++;
+              }
+          }else{
+              System.out.println("impossible de colorer");
+          }
+
+
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 defaultBackground = getBackground();
-                searchPane = searchAdj(row,col);
-                if(isCliked()==false && searchPane.isCliked()==false){
-                    searchPane.setBackground(Color.GREEN);
-                    setBackground(Color.GREEN);
+                System.out.println(defaultBackground);
+                if(vertical){
+                    searchPane = searchAdjVertical(row,col);
+                    if(!isCliked() && !searchPane.isCliked()){
+                        searchPane.setBackground(Color.blue);
+                        setBackground(Color.blue);
+                    }else {
+                        System.out.println("impossible de colorer");
+                    }
+                }else {
+                    searchPane = searchAdjHorizontal(row,col);
+                    if(!isCliked() && !searchPane.isCliked()){
+                        searchPane.setBackground(Color.GREEN);
+                        setBackground(Color.GREEN);
+                    }else{
+                        System.out.println("impossible de colorer");
+                    }
                 }
+
 
             }
 
@@ -71,7 +119,7 @@ public class EventPane extends JPanel {
         return new Dimension(100,100);
     }
 
-    public EventPane searchAdj(int row , int col){
+    public EventPane searchAdjVertical(int row , int col){
 
         Map<EventPane,Position> map = testPane.getMapEventPanel();
         for (Map.Entry<EventPane, Position> entry : map.entrySet()) {
@@ -85,6 +133,23 @@ public class EventPane extends JPanel {
         return null;
 
     }
+
+
+    public EventPane searchAdjHorizontal(int row , int col){
+
+        Map<EventPane,Position> map = testPane.getMapEventPanel();
+        for (Map.Entry<EventPane, Position> entry : map.entrySet()) {
+
+            if(entry.getValue().getX()==row && entry.getValue().getY()+1==col){
+                System.out.println("@@@@@ Valeur x: " + entry.getValue().getX()+" Valeur Y: "+entry.getValue().getY());
+                return entry.getKey();
+            }
+        }
+
+        return null;
+
+    }
+
 
 
     public void setCliked(boolean cliked) {
