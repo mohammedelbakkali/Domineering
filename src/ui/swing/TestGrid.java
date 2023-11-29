@@ -5,16 +5,21 @@ import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.Map;
 
+import static ui.swing.CelltPane.*;
+
 public class TestGrid {
+    public static TestPane p;
 
     public TestGrid() {
+          p = new TestPane();
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 // Créer un TestPane
-                TestPane p = new TestPane();
+
 
                 // Créer un JFrame
                 JFrame frame = new JFrame("Domineering");
@@ -36,7 +41,7 @@ public class TestGrid {
                 newGame.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        DisplayPanelBord(p);
+                      //  DisplayPanelBord(p);
                     }
                 });
 
@@ -68,20 +73,28 @@ public class TestGrid {
 
     public static void main(String[] args) {
         new TestGrid();
+
+
+
     }
 
     public static void DisplayPanelBord(TestPane p) {
         // Récupérer la carte d'EventPane à Position depuis TestPane
-        Map<EventPane, Position> map = p.getMapEventPanel();
+        Map<CelltPane, Position> map = p.getMapCellPan();
 
         // Afficher les coordonnées de chaque EventPane
-        for (Map.Entry<EventPane, Position> entry : map.entrySet()) {
+        for (Map.Entry<CelltPane, Position> entry : map.entrySet()) {
             System.out.println("Valeur x : " + entry.getValue().getX() + " Valeur Y : " + entry.getValue().getY());
             entry.getKey().cliked=false;
+
             Color customColor = new Color(238, 238, 238);
 
             entry.getKey().setBackground(customColor);
 
         }
     }
+
+
+
+
 }
